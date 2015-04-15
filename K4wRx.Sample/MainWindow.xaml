@@ -1,8 +1,28 @@
 ﻿<Window x:Class="K4wRx.Sample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        Title="K4wRx Sample" Height="600" Width="700">
+    <Window.Resources>
+        <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e" />
+    </Window.Resources>
     <Grid>
-        
+        <Grid Margin="10,0,10,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+        </Grid>
+        <Viewbox HorizontalAlignment="Center" Grid.Row="0">
+            <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
+        </Viewbox>
+        <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="modeBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <RadioButton GroupName="mode" Name="Body" Content="Body" />
+                <RadioButton GroupName="mode" Name="BodyIndex" Content="BodyIndex" />
+                <RadioButton GroupName="mode" Name="Color" Content="Color" />
+                <RadioButton GroupName="mode" Name="Depth" Content="Depth" />
+                <RadioButton GroupName="mode" Name="Infrared" Content="Infrared" />
+            </StackPanel>
+        </StatusBar>
     </Grid>
 </Window>
