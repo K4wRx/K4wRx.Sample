@@ -12,7 +12,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
         </Grid>
-        <Viewbox HorizontalAlignment="Center" Grid.Row="0">
+        <Viewbox HorizontalAlignment="Center" Grid.Row="0" Name="FrameCanvas">
             <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
         </Viewbox>
         <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="modeBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
