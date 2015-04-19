@@ -213,6 +213,11 @@ namespace K4wRx.Sample.Models
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="drawingContext"></param>
         public void DrawClippedEdges(Microsoft.Kinect.Body body, DrawingContext drawingContext)
         {
             FrameEdges clippedEdges = body.ClippedEdges;

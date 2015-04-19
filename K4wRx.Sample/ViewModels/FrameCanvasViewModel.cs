@@ -1,5 +1,7 @@
 ﻿using K4wRx.Sample.Models;
 using Microsoft.Kinect;
+using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +15,21 @@ namespace K4wRx.Sample.ViewModels
     public class FrameCanvasViewModel
     {
         private BodyPainter bodyPainter;
-
         private KinectSensorModel kinectSensor;
 
         public FrameCanvasViewModel()
         {
             this.kinectSensor = new KinectSensorModel();
             this.bodyPainter = new BodyPainter();
+
+            this.Bodies = this.kinectSensor.ObserveProperty(k => k.Bodies).ToReactiveProperty();
+            this.Bodies.Subscribe(bodies =>
+            {
+                this.DrawCanvas(null, bodies);
+            });
         }
+
+        public ReactiveProperty<Body[]> Bodies { get; private set; }
 
         /// <summary>
         /// Draw bones and hands on canvas when body frame is arrived
