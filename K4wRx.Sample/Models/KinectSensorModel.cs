@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Kinect;
+using System.Reactive;
+using System.Reactive.Linq;
 using K4wRx.Extensions;
 using System.ComponentModel;
 
@@ -11,6 +13,8 @@ namespace K4wRx.Sample.Models
 {
     public class KinectSensorModel : INotifyPropertyChanged
     {
+        private IDisposable disposer;
+
         public CoordinateMapper CoordinateMapper;
         public KinectSensor sensor;
 
@@ -34,16 +38,25 @@ namespace K4wRx.Sample.Models
         public KinectSensorModel()
         {
             this.sensor = KinectSensor.GetDefault();
+            this.CoordinateMapper = this.sensor.CoordinateMapper;
         }
 
         public void Start()
         {
-            this.sensor.BodyAsObservable().Subscribe(bodies =>
+            this.disposer = this.sensor.BodyAsObservable().Subscribe(bodies =>
             {
                 this.Bodies = bodies.ToArray();
             });
 
             this.sensor.Open();
+        }
+
+        public void Stop()
+        {
+            if (this.disposer != null)
+            {
+                this.disposer.Dispose();
+            } 
         }
 
         public event PropertyChangedEventHandler PropertyChanged = (_, __) => { };

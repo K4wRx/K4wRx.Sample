@@ -69,8 +69,8 @@ namespace K4wRx.Sample.Models
 
         public BodyPainter()
         {
-            DisplayWidth = 1;
-            DisplayHeight = 1;
+            DisplayWidth = 600;
+            DisplayHeight = 500;
 
             // a bone defined as a line between two joints
             this.bones = new List<Tuple<JointType, JointType>>();

@@ -32,6 +32,9 @@ namespace K4wRx.Sample
             this.drawingGroup = new DrawingGroup();
             this.drawingImage = new DrawingImage(drawingGroup);
 
+            this.canvasVM.DrawingGroup = this.drawingGroup;
+            this.canvasVM.Start();
+
             this.DataContext = this;
 
             InitializeComponent();

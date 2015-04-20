@@ -20,16 +20,30 @@ namespace K4wRx.Sample.ViewModels
         public FrameCanvasViewModel()
         {
             this.kinectSensor = new KinectSensorModel();
+            this.kinectSensor.Start();
             this.bodyPainter = new BodyPainter();
 
             this.Bodies = this.kinectSensor.ObserveProperty(k => k.Bodies).ToReactiveProperty();
-            this.Bodies.Subscribe(bodies =>
-            {
-                this.DrawCanvas(null, bodies);
-            });
         }
 
         public ReactiveProperty<Body[]> Bodies { get; private set; }
+        public DrawingGroup DrawingGroup { get; set; }
+
+        /// <summary>
+        /// Start drawing canvas
+        /// </summary>
+        /// <returns></returns>
+        public IDisposable Start()
+        {
+            return this.Bodies.Subscribe(bodies =>
+            {
+                // Observable property return null at first time (and never do)
+                if (bodies != null)
+                {
+                    this.DrawCanvas(this.DrawingGroup, bodies);
+                }
+            });
+        }
 
         /// <summary>
         /// Draw bones and hands on canvas when body frame is arrived
