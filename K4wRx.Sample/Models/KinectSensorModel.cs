@@ -11,52 +11,28 @@ using System.ComponentModel;
 
 namespace K4wRx.Sample.Models
 {
-    public class KinectSensorModel : INotifyPropertyChanged
+    public class KinectSensorModel
     {
-        private IDisposable disposer;
-
         public CoordinateMapper CoordinateMapper;
         public KinectSensor sensor;
 
-        private Body[] bodies;
-        public Body[] Bodies {
-            get
-            {
-                return this.bodies;
-            }
-            private set
-            {
-                this.bodies = value;
-                var h = this.PropertyChanged;
-                if (h != null)
-                {
-                    h(this, new PropertyChangedEventArgs("Bodies"));
-                }
-            }
-        }
+        public IObservable<IEnumerable<Body>> BodyStream;
 
         public KinectSensorModel()
         {
             this.sensor = KinectSensor.GetDefault();
             this.CoordinateMapper = this.sensor.CoordinateMapper;
+
+            this.BodyStream = this.sensor.BodyAsObservable();
         }
 
         public void Start()
         {
-            this.disposer = this.sensor.BodyAsObservable().Subscribe(bodies =>
-            {
-                this.Bodies = bodies.ToArray();
-            });
-
             this.sensor.Open();
         }
 
         public void Stop()
         {
-            if (this.disposer != null)
-            {
-                this.disposer.Dispose();
-            } 
         }
 
         public event PropertyChangedEventHandler PropertyChanged = (_, __) => { };

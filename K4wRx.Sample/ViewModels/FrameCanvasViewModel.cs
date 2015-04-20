@@ -22,11 +22,8 @@ namespace K4wRx.Sample.ViewModels
             this.kinectSensor = new KinectSensorModel();
             this.kinectSensor.Start();
             this.bodyPainter = new BodyPainter();
-
-            this.Bodies = this.kinectSensor.ObserveProperty(k => k.Bodies).ToReactiveProperty();
         }
 
-        public ReactiveProperty<Body[]> Bodies { get; private set; }
         public DrawingGroup DrawingGroup { get; set; }
 
         /// <summary>
@@ -35,13 +32,9 @@ namespace K4wRx.Sample.ViewModels
         /// <returns></returns>
         public IDisposable Start()
         {
-            return this.Bodies.Subscribe(bodies =>
+            return this.kinectSensor.BodyStream.Subscribe(bodies =>
             {
-                // Observable property return null at first time (and never do)
-                if (bodies != null)
-                {
-                    this.DrawCanvas(this.DrawingGroup, bodies);
-                }
+                this.DrawCanvas(this.DrawingGroup, bodies);
             });
         }
 
@@ -49,7 +42,7 @@ namespace K4wRx.Sample.ViewModels
         /// Draw bones and hands on canvas when body frame is arrived
         /// </summary>
         /// <param name="bodies"></param>
-        public void DrawCanvas(DrawingGroup drawingGroup, Body[] bodies)
+        public void DrawCanvas(DrawingGroup drawingGroup, IEnumerable<Body> bodies)
         {
             using (DrawingContext dc = drawingGroup.Open())
             {
@@ -94,6 +87,11 @@ namespace K4wRx.Sample.ViewModels
                 // prevent drawing outside of our render area
                 drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.bodyPainter.DisplayWidth, this.bodyPainter.DisplayHeight));
             }
+        }
+
+        public void DrawCanvas(DrawingGroup drawingGroup, ColorFrameArrivedEventArgs e)
+        {
+
         }
     }
 }
