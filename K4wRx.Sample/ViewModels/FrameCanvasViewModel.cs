@@ -15,6 +15,7 @@ namespace K4wRx.Sample.ViewModels
     public class FrameCanvasViewModel
     {
         private BodyPainter bodyPainter;
+        private ColorPainter colorPainter;
         private KinectSensorModel kinectSensor;
 
         public FrameCanvasViewModel()
@@ -22,6 +23,7 @@ namespace K4wRx.Sample.ViewModels
             this.kinectSensor = new KinectSensorModel();
             this.kinectSensor.Start();
             this.bodyPainter = new BodyPainter();
+            this.colorPainter = new ColorPainter();
         }
 
         public DrawingGroup DrawingGroup { get; set; }
@@ -32,16 +34,24 @@ namespace K4wRx.Sample.ViewModels
         /// <returns></returns>
         public IDisposable Start()
         {
-            return this.kinectSensor.BodyStream.Subscribe(bodies =>
+            var bodyDisposable = this.kinectSensor.BodyStream.Subscribe(bodies =>
             {
                 this.DrawCanvas(this.DrawingGroup, bodies);
             });
+
+            var colorDisposable = this.kinectSensor.ColorStream.Subscribe(colorFrame =>
+            {
+                this.DrawCanvas(this.DrawingGroup, colorFrame);
+            });
+
+            return colorDisposable;
         }
 
         /// <summary>
         /// Draw bones and hands on canvas when body frame is arrived
         /// </summary>
         /// <param name="bodies"></param>
+        /// <param name="drawingGroup"></param>
         public void DrawCanvas(DrawingGroup drawingGroup, IEnumerable<Body> bodies)
         {
             using (DrawingContext dc = drawingGroup.Open())
@@ -89,9 +99,17 @@ namespace K4wRx.Sample.ViewModels
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="drawingGroup"></param>
+        /// <param name="e"></param>
         public void DrawCanvas(DrawingGroup drawingGroup, ColorFrameArrivedEventArgs e)
         {
-
+            using (DrawingContext dc = drawingGroup.Open())
+            {
+                colorPainter.Draw(dc, e);
+            }
         }
     }
 }

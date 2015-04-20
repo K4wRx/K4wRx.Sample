@@ -18,12 +18,15 @@ namespace K4wRx.Sample.Models
 
         public IObservable<IEnumerable<Body>> BodyStream;
 
+        public IObservable<ColorFrameArrivedEventArgs> ColorStream;
+
         public KinectSensorModel()
         {
             this.sensor = KinectSensor.GetDefault();
             this.CoordinateMapper = this.sensor.CoordinateMapper;
 
             this.BodyStream = this.sensor.BodyAsObservable();
+            this.ColorStream = this.sensor.ColorFrameAsObservable();
         }
 
         public void Start()
@@ -34,7 +37,5 @@ namespace K4wRx.Sample.Models
         public void Stop()
         {
         }
-
-        public event PropertyChangedEventHandler PropertyChanged = (_, __) => { };
     }
 }

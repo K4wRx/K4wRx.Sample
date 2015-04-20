@@ -115,6 +115,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\BodyPainter.cs" />
+    <Compile Include="Models\ColorPainter.cs" />
     <Compile Include="Models\KinectSensorModel.cs" />
     <Compile Include="ViewModels\FrameCanvasViewModel.cs" />
     <Page Include="MainWindow.xaml">
