@@ -16,6 +16,7 @@ namespace K4wRx.Sample.ViewModels
     {
         private BodyPainter bodyPainter;
         private ColorPainter colorPainter;
+        private BodyIndexPainter bodyIndexPainter;
         private KinectSensorModel kinectSensor;
 
         public FrameCanvasViewModel()
@@ -24,6 +25,7 @@ namespace K4wRx.Sample.ViewModels
             this.kinectSensor.Start();
             this.bodyPainter = new BodyPainter();
             this.colorPainter = new ColorPainter();
+            this.bodyIndexPainter = new BodyIndexPainter(kinectSensor.sensor);
         }
 
         public DrawingGroup DrawingGroup { get; set; }
@@ -34,17 +36,22 @@ namespace K4wRx.Sample.ViewModels
         /// <returns></returns>
         public IDisposable Start()
         {
-            var bodyDisposable = this.kinectSensor.BodyStream.Subscribe(bodies =>
+            //var bodyDisposable = this.kinectSensor.BodyStream.Subscribe(bodies =>
+            //{
+            //    this.DrawCanvas(this.DrawingGroup, bodies);
+            //});
+
+            //var colorDisposable = this.kinectSensor.ColorStream.Subscribe(colorFrame =>
+            //{
+            //    this.DrawCanvas(this.DrawingGroup, colorFrame);
+            //});
+
+            var bodyIndexDisposable = this.kinectSensor.BodyIndexStream.Subscribe(bodyIndexFrame =>
             {
-                this.DrawCanvas(this.DrawingGroup, bodies);
+                this.DrawCanvas(this.DrawingGroup, bodyIndexFrame);
             });
 
-            var colorDisposable = this.kinectSensor.ColorStream.Subscribe(colorFrame =>
-            {
-                this.DrawCanvas(this.DrawingGroup, colorFrame);
-            });
-
-            return colorDisposable;
+            return bodyIndexDisposable;
         }
 
         /// <summary>
@@ -109,6 +116,14 @@ namespace K4wRx.Sample.ViewModels
             using (DrawingContext dc = drawingGroup.Open())
             {
                 colorPainter.Draw(dc, e);
+            }
+        }
+
+        public void DrawCanvas(DrawingGroup drawingGroup, BodyIndexFrameArrivedEventArgs e)
+        {
+            using (DrawingContext dc = drawingGroup.Open())
+            {
+                bodyIndexPainter.Draw(dc, e);
             }
         }
     }

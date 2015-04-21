@@ -20,6 +20,8 @@ namespace K4wRx.Sample.Models
 
         public IObservable<ColorFrameArrivedEventArgs> ColorStream;
 
+        public IObservable<BodyIndexFrameArrivedEventArgs> BodyIndexStream;
+
         public KinectSensorModel()
         {
             this.sensor = KinectSensor.GetDefault();
@@ -27,6 +29,7 @@ namespace K4wRx.Sample.Models
 
             this.BodyStream = this.sensor.BodyAsObservable();
             this.ColorStream = this.sensor.ColorFrameAsObservable();
+            this.BodyIndexStream = this.sensor.BodyIndexFrameAsObservable();
         }
 
         public void Start()
