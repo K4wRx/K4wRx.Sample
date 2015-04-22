@@ -118,6 +118,7 @@
     <Compile Include="Models\BodyIndexPainter.cs" />
     <Compile Include="Models\BodyPainter.cs" />
     <Compile Include="Models\ColorPainter.cs" />
+    <Compile Include="Models\DepthPainter.cs" />
     <Compile Include="Models\KinectSensorModel.cs" />
     <Compile Include="ViewModels\FrameCanvasViewModel.cs" />
     <Page Include="MainWindow.xaml">
