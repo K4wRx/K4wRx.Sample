@@ -17,7 +17,7 @@
         </Viewbox>
         <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="modeBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <RadioButton GroupName="mode" Name="Body" Content="Body" />
+                <RadioButton GroupName="mode" Name="Body" Content="Body" IsChecked="True"/>
                 <RadioButton GroupName="mode" Name="BodyIndex" Content="BodyIndex" />
                 <RadioButton GroupName="mode" Name="Color" Content="Color" />
                 <RadioButton GroupName="mode" Name="Depth" Content="Depth" />

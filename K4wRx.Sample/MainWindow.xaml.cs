@@ -42,7 +42,7 @@ namespace K4wRx.Sample
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            // TODO: resume KinectStream
+            this.canvasVM.Stop();
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

@@ -5,6 +5,7 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,14 @@ namespace K4wRx.Sample.ViewModels
         private InfraredPainter infraredPainter;
         private KinectSensorModel kinectSensor;
 
+        private IDisposable bodyDisposable;
+        private IDisposable colorDisposable;
+        private IDisposable bodyIndexDisposable;
+        private IDisposable depthDisposable;
+        private IDisposable infraredDisposable;
+
+        private CompositeDisposable compositeDisposable;
+
         public FrameCanvasViewModel()
         {
             this.kinectSensor = new KinectSensorModel();
@@ -30,42 +39,119 @@ namespace K4wRx.Sample.ViewModels
             this.depthPainter = new DepthPainter();
             this.infraredPainter = new InfraredPainter();
             this.bodyIndexPainter = new BodyIndexPainter(kinectSensor.sensor);
+
+            this.compositeDisposable = new CompositeDisposable();
+
+            bodyIsChecked = new ReactiveProperty<bool>();
+            colorIsChecked = new ReactiveProperty<bool>();
+            depthIsChecked = new ReactiveProperty<bool>();
+            infraredIsChecked = new ReactiveProperty<bool>();
+            bodyIndexIsChecked = new ReactiveProperty<bool>();
         }
 
         public DrawingGroup DrawingGroup { get; set; }
+
+        public ReactiveProperty<bool> bodyIsChecked { get; private set; }
+        public ReactiveProperty<bool> colorIsChecked { get; private set; }
+        public ReactiveProperty<bool> depthIsChecked { get; private set; }
+        public ReactiveProperty<bool> infraredIsChecked { get; private set; }
+        public ReactiveProperty<bool> bodyIndexIsChecked { get; private set; }
 
         /// <summary>
         /// Start drawing canvas
         /// </summary>
         /// <returns></returns>
-        public IDisposable Start()
+        public void Start()
         {
-            //var bodyDisposable = this.kinectSensor.BodyStream.Subscribe(bodies =>
-            //{
-            //    this.DrawCanvas(this.DrawingGroup, bodies);
-            //});
-
-            //var colorDisposable = this.kinectSensor.ColorStream.Subscribe(colorFrame =>
-            //{
-            //    this.DrawCanvas(this.DrawingGroup, colorFrame);
-            //});
-
-            //var bodyIndexDisposable = this.kinectSensor.BodyIndexStream.Subscribe(bodyIndexFrame =>
-            //{
-            //    this.DrawCanvas(this.DrawingGroup, bodyIndexFrame);
-            //});
-
-            //var depthDisposable = this.kinectSensor.DepthStream.Subscribe(depthFrame =>
-            //{
-            //    this.DrawCanvas(this.DrawingGroup, depthFrame);
-            //});
-
-            var infraredDisposable = this.kinectSensor.InfraredStream.Subscribe(infraredFrame =>
+            this.bodyIsChecked.Subscribe(e =>
             {
-                this.DrawCanvas(this.DrawingGroup, infraredFrame);
+                if (e)
+                {
+                    bodyDisposable = this.kinectSensor.BodyStream.Subscribe(frame =>
+                    {
+                        this.DrawCanvas(this.DrawingGroup, frame);
+                    });
+
+                    compositeDisposable.Add(bodyDisposable);
+                }
+                else
+                {
+                    compositeDisposable.Remove(bodyDisposable);
+                }
             });
 
-            return infraredDisposable;
+            this.colorIsChecked.Subscribe(e =>
+            {
+                if (e)
+                {
+                    colorDisposable = this.kinectSensor.ColorStream.Subscribe(frame =>
+                    {
+                        this.DrawCanvas(this.DrawingGroup, frame);
+                    });
+
+                    compositeDisposable.Add(colorDisposable);
+                }
+                else
+                {
+                    compositeDisposable.Remove(colorDisposable);
+                }
+            });
+
+            this.bodyIndexIsChecked.Subscribe(e =>
+            {
+                if (e)
+                {
+                    bodyIndexDisposable = this.kinectSensor.BodyIndexStream.Subscribe(frame =>
+                    {
+                        this.DrawCanvas(this.DrawingGroup, frame);
+                    });
+
+                    compositeDisposable.Add(bodyIndexDisposable);
+                }
+                else
+                {
+                    compositeDisposable.Remove(bodyIndexDisposable);
+                }
+            });
+
+            this.depthIsChecked.Subscribe(e =>
+            {
+                if (e)
+                {
+                    depthDisposable = this.kinectSensor.DepthStream.Subscribe(frame =>
+                    {
+                        this.DrawCanvas(this.DrawingGroup, frame);
+                    });
+
+                    compositeDisposable.Add(depthDisposable);
+                }
+                else
+                {
+                    compositeDisposable.Remove(depthDisposable);
+                }
+            });
+
+            this.infraredIsChecked.Subscribe(e =>
+            {
+                if (e)
+                {
+                    infraredDisposable = this.kinectSensor.InfraredStream.Subscribe(frame =>
+                    {
+                        this.DrawCanvas(this.DrawingGroup, frame);
+                    });
+
+                    compositeDisposable.Add(infraredDisposable);
+                }
+                else
+                {
+                    compositeDisposable.Remove(infraredDisposable);
+                }
+            });
+        }
+
+        public void Stop()
+        {
+            this.compositeDisposable.Dispose();
         }
 
         /// <summary>
