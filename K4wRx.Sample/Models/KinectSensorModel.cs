@@ -24,6 +24,8 @@ namespace K4wRx.Sample.Models
 
         public IObservable<DepthFrameArrivedEventArgs> DepthStream;
 
+        public IObservable<InfraredFrameArrivedEventArgs> InfraredStream;
+
         public KinectSensorModel()
         {
             this.sensor = KinectSensor.GetDefault();
@@ -33,6 +35,7 @@ namespace K4wRx.Sample.Models
             this.ColorStream = this.sensor.ColorFrameAsObservable();
             this.BodyIndexStream = this.sensor.BodyIndexFrameAsObservable();
             this.DepthStream = this.sensor.DepthFrameAsObservable();
+            this.InfraredStream = this.sensor.InfraredFrameAsObservable();
         }
 
         public void Start()

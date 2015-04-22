@@ -18,6 +18,7 @@ namespace K4wRx.Sample.ViewModels
         private ColorPainter colorPainter;
         private BodyIndexPainter bodyIndexPainter;
         private DepthPainter depthPainter;
+        private InfraredPainter infraredPainter;
         private KinectSensorModel kinectSensor;
 
         public FrameCanvasViewModel()
@@ -27,6 +28,7 @@ namespace K4wRx.Sample.ViewModels
             this.bodyPainter = new BodyPainter();
             this.colorPainter = new ColorPainter();
             this.depthPainter = new DepthPainter();
+            this.infraredPainter = new InfraredPainter();
             this.bodyIndexPainter = new BodyIndexPainter(kinectSensor.sensor);
         }
 
@@ -53,12 +55,17 @@ namespace K4wRx.Sample.ViewModels
             //    this.DrawCanvas(this.DrawingGroup, bodyIndexFrame);
             //});
 
-            var depthDisposable = this.kinectSensor.DepthStream.Subscribe(depthFrame =>
+            //var depthDisposable = this.kinectSensor.DepthStream.Subscribe(depthFrame =>
+            //{
+            //    this.DrawCanvas(this.DrawingGroup, depthFrame);
+            //});
+
+            var infraredDisposable = this.kinectSensor.InfraredStream.Subscribe(infraredFrame =>
             {
-                this.DrawCanvas(this.DrawingGroup, depthFrame);
+                this.DrawCanvas(this.DrawingGroup, infraredFrame);
             });
 
-            return depthDisposable;
+            return infraredDisposable;
         }
 
         /// <summary>
@@ -139,6 +146,14 @@ namespace K4wRx.Sample.ViewModels
             using (DrawingContext dc = drawingGroup.Open())
             {
                 depthPainter.Draw(dc, e);
+            }
+        }
+
+        public void DrawCanvas(DrawingGroup drawingGroup, InfraredFrameArrivedEventArgs e)
+        {
+            using (DrawingContext dc = drawingGroup.Open())
+            {
+                infraredPainter.Draw(dc, e);
             }
         }
     }
