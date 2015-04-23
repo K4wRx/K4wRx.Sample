@@ -15,13 +15,13 @@
         <Viewbox HorizontalAlignment="Center" Grid.Row="0" Name="FrameCanvas">
             <Image Source="{Binding ImageSource}" Stretch="UniformToFill" />
         </Viewbox>
-        <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="modeBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}">
+        <StatusBar Grid.Row="1" HorizontalAlignment="Stretch" Name="modeBar" VerticalAlignment="Bottom" Background="White" Foreground="{StaticResource MediumGreyBrush}" >
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <RadioButton GroupName="mode" Name="Body" Content="Body" IsChecked="True"/>
-                <RadioButton GroupName="mode" Name="BodyIndex" Content="BodyIndex" />
-                <RadioButton GroupName="mode" Name="Color" Content="Color" />
-                <RadioButton GroupName="mode" Name="Depth" Content="Depth" />
-                <RadioButton GroupName="mode" Name="Infrared" Content="Infrared" />
+                <RadioButton GroupName="mode" Name="Body" Content="Body" IsChecked="{Binding bodyIsChecked, Mode=TwoWay}"/>
+                <RadioButton GroupName="mode" Name="BodyIndex" Content="BodyIndex" IsChecked="{Binding bodyIndexIsChecked, Mode=TwoWay}"/>
+                <RadioButton GroupName="mode" Name="Color" Content="Color" IsChecked="{Binding colorIsChecked, Mode=TwoWay}"/>
+                <RadioButton GroupName="mode" Name="Depth" Content="Depth" IsChecked="{Binding depthIsChecked, Mode=TwoWay}"/>
+                <RadioButton GroupName="mode" Name="Infrared" Content="Infrared" IsChecked="{Binding infraredIsChecked, Mode=TwoWay}"/>
             </StackPanel>
         </StatusBar>
     </Grid>

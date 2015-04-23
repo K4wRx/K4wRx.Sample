@@ -25,6 +25,65 @@ namespace K4wRx.Sample
             }
         }
 
+        public bool bodyIsChecked
+        {
+            get
+            {
+                return canvasVM.bodyIsChecked.Value;
+            }
+            set
+            {
+                canvasVM.bodyIsChecked.Value = value;
+            }
+        }
+
+        public bool bodyIndexIsChecked
+        {
+            get
+            {
+                return canvasVM.bodyIndexIsChecked.Value;
+            }
+            set
+            {
+                canvasVM.bodyIndexIsChecked.Value = value;
+            }
+        }
+
+        public bool colorIsChecked
+        {
+            get
+            {
+                return canvasVM.colorIsChecked.Value;
+            }
+            set
+            {
+                canvasVM.colorIsChecked.Value = value;
+            }
+        }
+
+        public bool depthIsChecked
+        {
+            get
+            {
+                return canvasVM.depthIsChecked.Value;
+            }
+            set
+            {
+                canvasVM.depthIsChecked.Value = value;
+            }
+        }
+
+        public bool infraredIsChecked
+        {
+            get
+            {
+                return canvasVM.infraredIsChecked.Value;
+            }
+            set
+            {
+                canvasVM.infraredIsChecked.Value = value;
+            }
+        }
         public MainWindow()
         {
             this.canvasVM = new FrameCanvasViewModel();

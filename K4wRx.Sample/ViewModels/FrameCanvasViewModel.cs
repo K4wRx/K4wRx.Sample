@@ -74,7 +74,7 @@ namespace K4wRx.Sample.ViewModels
 
                     compositeDisposable.Add(bodyDisposable);
                 }
-                else
+                else if (bodyDisposable != null)
                 {
                     compositeDisposable.Remove(bodyDisposable);
                 }
@@ -91,7 +91,7 @@ namespace K4wRx.Sample.ViewModels
 
                     compositeDisposable.Add(colorDisposable);
                 }
-                else
+                else if (colorDisposable != null)
                 {
                     compositeDisposable.Remove(colorDisposable);
                 }
@@ -108,7 +108,7 @@ namespace K4wRx.Sample.ViewModels
 
                     compositeDisposable.Add(bodyIndexDisposable);
                 }
-                else
+                else if (bodyIndexDisposable != null)
                 {
                     compositeDisposable.Remove(bodyIndexDisposable);
                 }
@@ -125,7 +125,7 @@ namespace K4wRx.Sample.ViewModels
 
                     compositeDisposable.Add(depthDisposable);
                 }
-                else
+                else if (depthDisposable != null)
                 {
                     compositeDisposable.Remove(depthDisposable);
                 }
@@ -142,7 +142,7 @@ namespace K4wRx.Sample.ViewModels
 
                     compositeDisposable.Add(infraredDisposable);
                 }
-                else
+                else if (infraredDisposable != null)
                 {
                     compositeDisposable.Remove(infraredDisposable);
                 }
